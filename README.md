@@ -7,6 +7,13 @@ items = [('one', 'two'), ('three', 'four'), ('five', 'six'), ('string', 'a')]
 sorted_items = sorted(items, key=lambda x: x[-1][-1])  
 # sorted_items = [ ('string', 'a'), ('one', 'two'), ('three', 'four'), ('five', 'six')]
 ```
+#### Обратные индексы. Вывести все элементы кортежа countries, кроме двух последних и трех первых.
+``` Python
+countries = ('Russia', 'Argentina', 'Slovakia', 'Canada', 'Slovenia', 'Italy', 'Spain', 'Ukraine', 'Chile', 'Cameroon')
+print(countries[3:-2])
+# ('Canada', 'Slovenia', 'Italy', 'Spain', 'Ukraine')
+```
+
 #### CSV file reader
 ``` Python
 import csv
