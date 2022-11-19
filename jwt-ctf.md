@@ -43,7 +43,9 @@ python3 jwt_tool.py eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiZ3Vlc3QifQ.
 -d - crack by dictionary
 
 <img width="1432" alt="image" src="https://user-images.githubusercontent.com/89765480/202840902-3235bb4d-02ce-425f-bc6f-a07f2ba36540.png">
-### 7. Encode jwt:
+
+
+### 7. Encode jwt
 
 <img width="1186" alt="image" src="https://user-images.githubusercontent.com/89765480/202841252-b6a0668b-2389-4648-a4a3-38693471661c.png">
 
