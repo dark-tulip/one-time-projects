@@ -1,5 +1,11 @@
 # python-some-lang-tips
 some language tips 
+#### Swap to variables
+```Python
+a = a + b
+b = a - b
+a = a - b
+```
 
 #### Отсортировать список по последней букве второго элемента
 ``` Python
