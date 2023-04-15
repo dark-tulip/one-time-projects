@@ -116,3 +116,117 @@ public class Main {
         }
     }
 }
+
+
+// V2
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+
+class Server {
+  boolean isActive = true;
+}
+
+class DataCenter {
+  private int resets = 0;   // число перезапусков
+  private int actives;      // число рабочих (не выключенных) серверов
+  Server[] servers;
+
+  public DataCenter(int serversCnt) {
+    servers = new Server[serversCnt];
+
+    for(Server server: servers) {
+      server = new Server();
+    }
+
+    actives = serversCnt;
+  }
+
+  public void resetAll() {
+    resets++;
+    for (var server: servers) {
+      server.isActive = true;
+    }
+    actives = servers.length;
+  }
+
+  /**
+   * starts from ZERO to n - 1 servers
+   */
+  public void disableOne(int serverPosition) {
+    // повторно выключить сервер нельзя
+    if (servers[serverPosition].isActive) {
+      actives --;
+      servers[serverPosition].isActive = false;
+    }
+  }
+
+  public int getMul() {
+    return resets * actives;
+  }
+}
+
+
+public class Main {
+  public static final String RESET = "RESET";
+  public static final String GETMIN = "GETMIN";
+  public static final String GETMAX = "GETMAX";
+
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    int n = Integer.parseInt(st.nextToken());
+    int m = Integer.parseInt(st.nextToken());
+    int q = Integer.parseInt(st.nextToken());
+
+    // region init servers
+    DataCenter[] dataCenters = (DataCenter[]) Stream.generate(() -> new DataCenter(m)).limit(n).toArray();
+
+    while (q-- > 0) {
+      StringTokenizer st2 = new StringTokenizer(br.readLine());
+      String event = st2.nextToken();
+
+      if (event.startsWith(GETMAX)) {
+        // получить номер дата-центра с наибольшим произведением R_i  * A_i
+        int maxi = 0;
+        int maxMul = dataCenters[0].getMul();
+
+        for(int i = 1; i < m; i++) {
+          if (dataCenters[i].getMul() > maxMul) {
+            maxMul = dataCenters[i].getMul();
+            maxi = i;
+          }
+        }
+        System.out.println(maxi + 1);
+
+      } else if (event.startsWith(GETMIN)) {
+        // получить номер дата-центра с наименьшим произведением R_i  * A_i
+        int mini = 0;
+        int minMul = dataCenters[0].getMul();
+
+        for(int i = 1; i < m; i++) {
+          if (dataCenters[i].getMul() < minMul) {
+            minMul = dataCenters[i].getMul();
+            mini = i;
+          }
+        }
+        System.out.println(mini + 1);
+
+      } else if (event.startsWith(RESET)) {
+        int dcNum =  Integer.parseInt(st2.nextToken()) - 1;
+        dataCenters[dcNum].resetAll();
+
+      } else {
+        int dcNum =  Integer.parseInt(st2.nextToken()) - 1;
+        int serverNum =  Integer.parseInt(st2.nextToken()) - 1;
+        dataCenters[dcNum].disableOne(serverNum);
+
+      }
+    }
+  }
+}
