@@ -81,3 +81,19 @@ typing_extensions==4.1.1
 wcwidth==0.2.13
 zipp==3.6.0
 ```
+
+## 3. mldev run report html
+```
+pip install recommonmark
+cd docs
+make html
+```
+
+```
+xdg-open build/html/index.html  # Для Linux
+open build/html/index.html  # Для macOS
+start build/html/index.html  # Для Windows
+```
+
+<img width="1197" alt="image" src="https://github.com/user-attachments/assets/abc0e555-74e8-4863-87c4-05e7ef353cb1" />
+
