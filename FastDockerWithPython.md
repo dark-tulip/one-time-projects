@@ -108,3 +108,9 @@ VALUES ('1984', 'George Orwell', 1949),
        ('Pride and Prejudice', 'Jane Austen', 1813),
        ('The Catcher in the Rye', 'J.D. Salinger', 1951);
 ```
+
+## Как вызвать?
+- введите в командной строке
+```
+curl http://localhost:8080/books/
+```
