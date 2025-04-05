@@ -13,19 +13,20 @@ my_service/
 import psycopg2
 import os
 
+# тут подключаемся к БД из докер контейнера
 def connect_and_fetch():
     conn = psycopg2.connect(
-        host=os.getenv("DB_HOST", "db"),
+        host=os.getenv("DB_HOST", "db"),  # берем hostname, (не по localhost, a по имени хоста)
         database=os.getenv("POSTGRES_DB", "testdb"),
         user=os.getenv("POSTGRES_USER", "user"),
         password=os.getenv("POSTGRES_PASSWORD", "password")
     )
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM books;")
+    cursor.execute("SELECT * FROM books;") # прочитать книжки
     rows = cursor.fetchall()
 
     for row in rows:
-        print(row)
+        print(row) # напечатать их
 
     cursor.close()
     conn.close()
@@ -53,12 +54,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 CMD ["python", "main.py"]
 ```
+
 🐙 docker-compose.yml
+
 ```yaml
 version: '3.9'
 
 services:
-  db:
+  postgres:
     image: postgres:14
     environment:
       POSTGRES_DB: testdb
@@ -70,20 +73,22 @@ services:
     ports:
       - "5432:5432"
 
-  app:
-    build: .
+  python_app:
+    build: .  # Взять докерфайл и создать образ
     depends_on:
-      - db
-    environment:
-      DB_HOST: db
-      POSTGRES_DB: testdb
-      POSTGRES_USER: user
+      - db    # сначала должна подняться БД
+    environment:  # тут передаем параметры для подключения к БД приложению на питоне
+      DB_HOST: postgres    ## hostname внутри сети докера
+      POSTGRES_DB: testdb  ## название БД
+      POSTGRES_USER: user  ## юзер для подключения к БД
       POSTGRES_PASSWORD: password
 
 volumes:
   pgdata:
 ```
+
 📌 init.sql
+- этот скрипт запустится, только один раз, когда мы впервые поднимем контейнер
 
 ```sql
 -- Создание таблицы и вставка данных
@@ -102,4 +107,3 @@ VALUES ('1984', 'George Orwell', 1949),
        ('Pride and Prejudice', 'Jane Austen', 1813),
        ('The Catcher in the Rye', 'J.D. Salinger', 1951);
 ```
-Хочешь добавить его через docker-entrypoint-initdb.d?
