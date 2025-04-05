@@ -9,50 +9,49 @@ my_service/
 ```
 📜 app/main.py — простой сервис Python
 ```python
-
+from fastapi import FastAPI
 import psycopg2
 import os
 
-# тут подключаемся к БД из докер контейнера
-def connect_and_fetch():
+app = FastAPI()
+
+def fetch_books():
     conn = psycopg2.connect(
-        host=os.getenv("DB_HOST", "db"),  # берем hostname, (не по localhost, a по имени хоста)
+        host=os.getenv("DB_HOST", "db"),
         database=os.getenv("POSTGRES_DB", "testdb"),
         user=os.getenv("POSTGRES_USER", "user"),
         password=os.getenv("POSTGRES_PASSWORD", "password")
     )
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM books;") # прочитать книжки
+    cursor.execute("SELECT * FROM books;")
     rows = cursor.fetchall()
-
-    for row in rows:
-        print(row) # напечатать их
-
     cursor.close()
     conn.close()
 
-if __name__ == "__main__":
-    connect_and_fetch()
+    return [{"id": row[0], "title": row[1]} for row in rows]
 
+@app.get("/books")
+def get_books():
+    return fetch_books()
 ```
 
 📦 app/requirements.txt
 ```
+fastapi
+uvicorn
 psycopg2-binary
 ```
 
 🐳 Dockerfile
 
 ```Dockerfile
-Копировать
-Редактировать
 FROM python:3.11-slim
 
 WORKDIR /app
 COPY app/ /app
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
 
 🐙 docker-compose.yml
@@ -82,6 +81,8 @@ services:
       POSTGRES_DB: testdb  ## название БД
       POSTGRES_USER: user  ## юзер для подключения к БД
       POSTGRES_PASSWORD: password
+    ports:
+      - "8080:8080"
 
 volumes:
   pgdata:
