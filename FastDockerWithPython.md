@@ -21,7 +21,7 @@ def connect_and_fetch():
         password=os.getenv("POSTGRES_PASSWORD", "password")
     )
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM test_table;")
+    cursor.execute("SELECT * FROM books;")
     rows = cursor.fetchall()
 
     for row in rows:
@@ -66,6 +66,7 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # создаем несколько тестовых БД c пользователями
     ports:
       - "5432:5432"
 
@@ -85,11 +86,20 @@ volumes:
 📌 init.sql
 
 ```sql
-
-CREATE TABLE IF NOT EXISTS test_table (
-    id SERIAL PRIMARY KEY,
-    name TEXT
+-- Создание таблицы и вставка данных
+CREATE TABLE books
+(
+    id             BIGSERIAL PRIMARY KEY,
+    title          text NOT NULL,
+    author         text NOT NULL,
+    published_year INTEGER
 );
-INSERT INTO test_table (name) VALUES ('Alice'), ('Bob');
+
+INSERT INTO books (title, author, published_year)
+VALUES ('1984', 'George Orwell', 1949),
+       ('To Kill a Mockingbird', 'Harper Lee', 1960),
+       ('The Great Gatsby', 'F. Scott Fitzgerald', 1925),
+       ('Pride and Prejudice', 'Jane Austen', 1813),
+       ('The Catcher in the Rye', 'J.D. Salinger', 1951);
 ```
 Хочешь добавить его через docker-entrypoint-initdb.d?
