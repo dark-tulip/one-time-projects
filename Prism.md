@@ -198,3 +198,22 @@ tansh@MacBook-Pro-tansh consensus-analyzer % cat results/results.json
 - "probability" — вероятность достижения консенсуса при таком поведении
 - "expectedMessages" — сколько сообщений в среднем потребуется
 - "backwardTransitions" — какие обратные переходы допущены. `-1` - откат назад, `0` - начальное состояние, `1` - подтвердил
+
+нарисуем выведенный граф:
+![graph](https://github.com/user-attachments/assets/9aa4c295-b677-4aa7-af21-2dca2825b7c5)
+
+выберем модель и сохраним в отдельном файле `selected_model.json`
+
+```json
+{
+  "modelCheckResultList": [
+    {
+      "backwardTransitions": [[0, 1, -1]],
+      "probability": 0.9950738842354971,
+      "expectedMessages": 3.000222766539187,
+      "id": 2007328737
+    }
+  ],
+  "organizations": ["Org1", "Org2", "Org3"]
+}
+```
