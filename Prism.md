@@ -217,3 +217,30 @@ tansh@MacBook-Pro-tansh consensus-analyzer % cat results/results.json
   "organizations": ["Org1", "Org2", "Org3"]
 }
 ```
+### 1.5 Передать json-файл в модуль планировщика. Запустить модуль планировщика. Ознакомиться с результатами логов. Объяснить полученный результат.
+
+запустим тесты на проекте consencus scheduler
+
+<img width="1417" alt="image" src="https://github.com/user-attachments/assets/a9bbe438-40f3-4c21-87a5-78211193ad1e" />
+
+
+разберем один лог файл
+
+```logs
+Apr 07, 2025 1:46:38 AM services.SendingConfirmationServiceImpl sendForConfirmationToOrganization
+INFO: Send for confirmation to Org1 finished with response true
+Apr 07, 2025 1:46:38 AM services.SendingConfirmationServiceImpl sendForConfirmationToOrganization
+INFO: Send for confirmation to Org2 finished with response false
+Apr 07, 2025 1:46:38 AM services.SendingConfirmationServiceImpl sendForConfirmationToOrganization
+INFO: Send for confirmation to Org3 finished with response true
+Apr 07, 2025 1:46:38 AM services.SendingConfirmationServiceImpl sendForConfirmationToOrganization
+INFO: Consensus is reached with 3 messages
+Apr 07, 2025 1:46:38 AM services.SendingConfirmationServiceImpl sendForConfirmationToOrganization
+INFO: Send for confirmation to Org1 finished with response false
+Apr 07, 2025 1:46:38 AM services.SendingConfirmationServiceImpl sendForConfirmationToOrganization
+INFO: Send for confirmation to Org2 finished with response false
+Apr 07, 2025 1:46:38 AM services.SendingConfirmationServiceImpl sendForConfirmationToOrganization
+INFO: Send for confirmation to Org3 finished with response true
+```
+- 2 из 3 организаций подтвердили — этого достаточно для выполнения правила OutOf(2, Org1, Org2, Org3).
+Консенсус достигнут.
