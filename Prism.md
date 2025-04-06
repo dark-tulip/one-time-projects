@@ -127,32 +127,19 @@ Policies:
 
 нужно изменить `Rule` в файле спеки
 - зададим правило большинства `OutOf`
+- `OutOf(k, OrgA, OrgB, ...)` - нужно согласие от минимум k организаций
 
 ```yaml
-Organizations:
-  -
-    Name: Org1
-
-    # Probability to accept next transaction. based on the historical data
-    Pr: 0.5
-
-  -
-    Name: Org2
-
-    # Probability to accept next transaction. based on the historical data
-    Pr: 0.5
-
-
-
 Policies:
   Endorsement:
     Type: Signature
-    Rule: "OutOf(1, Org1, Org2)"
+    Rule: "OutOf(2, Org3, Org2, Org1)"
 ```
 
 
 ```bash
-bin/run resources/cnf-simple.yaml results false
+ bin/run resources/cnf-1/cnf_1_properties.yaml resources/cnf-1/cnf_1_spec.yaml results false
 ```
 
-<img width="898" alt="image" src="https://github.com/user-attachments/assets/1774f428-da27-4855-a7ba-5eb923693c3d" />
+<img width="960" alt="image" src="https://github.com/user-attachments/assets/8f3abe48-ebbc-47f9-94e5-1ab2b29f0e74" />
+
