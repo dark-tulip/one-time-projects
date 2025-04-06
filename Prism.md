@@ -122,3 +122,37 @@ Policies:
     Type: Signature
     Rule: "(Org3 & Org2 & Org1)"% 
 ```
+
+### 1.2 Изменить файл спецификации таким образом, чтобы транзакция была принята всей сетью в случае, если большинство организаций ее подтвердили.
+
+нужно изменить `Rule` в файле спеки
+- зададим правило большинства `OutOf`
+
+```yaml
+Organizations:
+  -
+    Name: Org1
+
+    # Probability to accept next transaction. based on the historical data
+    Pr: 0.5
+
+  -
+    Name: Org2
+
+    # Probability to accept next transaction. based on the historical data
+    Pr: 0.5
+
+
+
+Policies:
+  Endorsement:
+    Type: Signature
+    Rule: "OutOf(1, Org1, Org2)"
+```
+
+
+```bash
+bin/run resources/cnf-simple.yaml results false
+```
+
+<img width="898" alt="image" src="https://github.com/user-attachments/assets/1774f428-da27-4855-a7ba-5eb923693c3d" />
