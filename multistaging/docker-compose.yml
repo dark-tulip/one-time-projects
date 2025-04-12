@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  backend-python:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - HELLO_MESSAGE=Hello from Python application. <br>Step 1 build the image and devtools. <br>Step 2 used to run the app.
+    container_name: backend-python
